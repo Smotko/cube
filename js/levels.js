@@ -9,7 +9,6 @@ define(function(require){
 
   return {
     load: function(level, o) {
-      console.log('loading', level, o)
       var result = this[level].apply(this);
       result.decals.position.z = o;
       result.obstacles.position.z = o;
@@ -50,11 +49,11 @@ define(function(require){
           group = new THREE.Object3D();
 
       dialog = new Dialog([
-        "Hi there! I am <i style='color:red'>cube</i>.",
-        "I have a <i class='superpower'>superpower</i>!",
-        "I can slide between <i>Worlds</i>.<br>Press <i class='superpower'>[space]</i> to try it now!",
-        "That was cool, right?<br> Press <i class='superpower'>[space]</i> to get back to<br> the first world.",
-        "OK, time to put my <i class='superpower'>superpower</i> to the test!"
+        "Hi there! I am <i style='color:red'>cube</i>.<br><small>Press <i class='key'>[enter]</i></small>",
+        "I have a <i class='superpower'>superpower</i>!<br><small>Press <i class='key'>[enter]</i></small>",
+        "I can slide between <i>Worlds</i>.<br><small>Press <i class='superpower'>[space]</i> to try it now!</small>",
+        "That was cool, right?<br> <small>Press <i class='superpower'>[space]</i> to get back to<br> the first world.</small>",
+        "OK, try to use the <i class='superpower'>superpower</i> to get passed obstacles!<br><small>Press <i class='key'>[enter]</i></small>"
       ], true);
 
       var size = 1;
@@ -83,11 +82,12 @@ define(function(require){
         group.add(obstacle);
       }
       var t = this.nextLevelTrigger();
-      t.position.set(0, 0, obstacle.position.z + 2);
+      t.position.set(0, 0, obstacle.position.z + 0.5);
       group.add(t);
       return {
         obstacles: group,
         decals: self.randomDecals(),
+        perspective: 0,
       };
     },
     level2: function() {
@@ -109,11 +109,12 @@ define(function(require){
         }
       }
       var t = this.nextLevelTrigger();
-      t.position.set(0, 0, obstacle.position.z + 2);
+      t.position.set(0, 0, obstacle.position.z + 0.5);
       group.add(t);
       return {
         obstacles: group,
         decals: self.randomDecals(),
+        perspective: 0,
       };
     },
     level3: function() {
@@ -135,11 +136,12 @@ define(function(require){
         }
       }
       var t = this.nextLevelTrigger();
-      t.position.set(0, 0, obstacle.position.z + 2);
+      t.position.set(0, 0, obstacle.position.z + 0.5);
       group.add(t);
       return {
         obstacles: group,
         decals: self.randomDecals(),
+        perspective: 1,
       };
     },
     level4: function() {
@@ -161,11 +163,12 @@ define(function(require){
         }
       }
       var t = this.nextLevelTrigger();
-      t.position.set(0, 0, obstacle.position.z + 2);
+      t.position.set(0, 0, obstacle.position.z + 0.5);
       group.add(t);
       return {
         obstacles: group,
         decals: self.randomDecals(),
+        perspective: 0
       };
     },
     level5: function() {
@@ -188,12 +191,14 @@ define(function(require){
         }
       }
       var t = this.nextLevelTrigger();
-      t.position.set(0, 0, obstacle.position.z + 2);
+      t.position.set(0, 0, obstacle.position.z + 0.5);
       group.add(t);
       return {
         obstacles: group,
         decals: self.randomDecals(),
+        perspective: 1
       };
     },
+
   };
 });

@@ -5,6 +5,8 @@ define(function(require){
     'backward': new THREE.Vector3(0,0,-1),
     'right': new THREE.Vector3(1,0,0),
     'left': new THREE.Vector3(-1,0,0),
+    'up': new THREE.Vector3(0,1,0),
+    'down': new THREE.Vector3(0,-1,0)
   };
 
   return function Collision(object, position) {

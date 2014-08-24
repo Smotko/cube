@@ -32,6 +32,7 @@ define(function(require) {
           group.rotation.z += speed.x;
         }
         if (Math.abs(group.rotation.x) >= Math.PI/2 || Math.abs(group.rotation.z) >= Math.PI/2) {
+          STATS.distance += 1;
           group.position.z += size * nor_speed.z;
           group.position.x += size * nor_speed.x;
           group.rotation.x = 0;

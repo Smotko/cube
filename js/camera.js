@@ -13,10 +13,11 @@ define(function(require) {
         pos = new THREE.Vector3(-p, 2, -p),
         lookat = new THREE.Vector3(),
         perspectives = [
+          [-p,-p],
+          [p,-p],
+          [-p,p],
           [p,p],
           [p,-p],
-          [-p,-p],
-          [-p,p],
         ],
         current_perspective = 0;
     renderer.shadowMapEnabled = true;
@@ -36,6 +37,10 @@ define(function(require) {
       invert: function() {
         pos.y = -pos.y;
         return pos.y > 0;
+      },
+      setPerspective: function(p) {
+        var curr = perspectives[p];
+        pos.set(curr[0], pos.y, curr[1]);
       },
       nextPerspective: function() {
         var curr = perspectives[++current_perspective%perspectives.length];

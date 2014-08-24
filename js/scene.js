@@ -39,11 +39,14 @@ define(function(require, exports) {
       },
       restartScene: function() {
         player.reset();
+        current_level = 1;
+        player.setSpeed(0, 0.055);
         this.loadScene();
       },
       loadScene: function(first) {
         scene.remove(level.obstacles, level.decals);
         level = Levels.load('level'+current_level%all_levels, player.getPosition().z);
+        CAMERA.setPerspective(level.perspective || 0);
         scene.add(level.obstacles, level.decals);
       },
       nextLevel: function() {

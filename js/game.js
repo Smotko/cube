@@ -1,12 +1,18 @@
 define(function(require) {
 
-  three = THREE.Bootstrap('core', 'stats');
+  three = THREE.Bootstrap('core');
   var scene = require('scene')(),
       camera = require('camera')(scene.player),
       keydown = false;
 
-  scene.loadScene();
+
   SCENE = scene;
+  CAMERA = camera;
+  STATS = {
+    'superpower': 0,
+    'distance': 0
+  }
+  scene.loadScene();
   var amb = new THREE.AmbientLight( 0x404040 ); // soft white light
   three.scene.add(amb);
 
@@ -30,7 +36,6 @@ define(function(require) {
       return;
     }
     scene.nextDialog(event.keyCode);
-    console.log(event.keyCode);
     keydown = true;
     switch(event.keyCode) {
 
@@ -41,6 +46,7 @@ define(function(require) {
         } else {
           $("#dialog").addClass('white');
         }
+        STATS.superpower += 1;
         scene.player.invert();
         break;
       case 87: //w
@@ -65,7 +71,12 @@ define(function(require) {
         scene.prevLevel();
         break;
       case 82:
+        STATS = {
+          'superpower': 0,
+          'distance': 0
+        };
         scene.restartScene();
+        break;
     }
   });
   return function (){};

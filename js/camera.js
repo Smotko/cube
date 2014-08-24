@@ -17,10 +17,10 @@ define(function(require) {
       update: function(t) {
         renderer.setClearColor(color);
         //console.log(player.position, player.pos)
-        camera.position.x = player.pposition.x - 10;
-        camera.position.z = player.pposition.z - 10;
+        camera.position.x = player.position.x - 10;
+        camera.position.z = player.position.z - 10;
         camera.position.y = 0.1* pos + position.y * 0.9;
-        camera.lookAt(player.pposition);
+        camera.lookAt(player.getPosition());
       },
       invert: function() {
         pos = pos == 10 ? -10 : 10;

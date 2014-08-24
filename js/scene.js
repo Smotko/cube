@@ -1,6 +1,6 @@
 define(function(require, exports) {
 
-  var BwObject = require('bwobject'),
+  var Cube = require('cube'),
       Plane = require('plane'),
       Player = require('player');
 
@@ -14,9 +14,9 @@ define(function(require, exports) {
         objects = [];
 
     for (var i = 0; i < NUM_OBJECTS; i++) {
-      obstacle = new BwObject(0.2);
+      obstacle = new Cube(0xEEEEEE, 0.2);
       obstacle.position.set((i%4 - 2)*0.3, obstacle.position.y, (i - NUM_OBJECTS/2)*0.3);
-      objects.push(obstacle);
+      //objects.push(obstacle);
     }
     b_plane.position.y = -0.001;
     w_plane.position.y = +0.001;
@@ -27,6 +27,9 @@ define(function(require, exports) {
     return {
       update: function(t) {
         player.update(t, objects);
+        for (var i = 0; i < objects.length; i++) {
+          objects[i].update();
+        }
       },
       player: player,
       objects: objects,

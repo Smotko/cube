@@ -7,49 +7,47 @@ define(function(require){
     var group = new THREE.Object3D(),
         invert = false,
         speed = new THREE.Vector3(),
+        position = new THREE.Vector3(),
+        original = 0,
         cube;
 
-    is_up = is_up || Math.random() < 0.5;
+    is_up = typeof is_up !== 'undefined' ? is_up : Math.random() < 0.5;
     color = color || (is_up ? 0xFFFFFF : 0x000000);
 
     cube = new Cube(color, size);
-    if (is_up) {
-      cube.position.y = size/2;
-    } else {
-      cube.position.y = -size/2;
-    }
-
     group.add(cube);
-    return $.extend(cube, {
+    group.position.y -= size/2;
+    return $.extend(group, {
       update: function(t) {
 
-        if (!invert) {
+        cube.position.copy(speed).normalize().multiplyScalar(-size/2);
+        if (is_up) {
+          cube.position.y = size/2;
           group.rotation.x += speed.z;
-          position.z = original + Math.sin(pivot.rotation.x)*size;
-
+          group.rotation.z += speed.x;
+          position.z = original + Math.sin(group.rotation.x)*size;
+        } else {
+          cube.position.y = -size/2;
+          group.rotation.x -= speed.z;
+          group.rotation.z -= speed.x;
+          position.z = original - Math.sin(group.rotation.x)*size;
         }
-        else {
-          pivot.rotation.x -= speed;
-          position.z = original - Math.sin(pivot.rotation.x)*size;
-        }
 
-        if (Math.abs(pivot.rotation.x) > Math.PI/2) {
-          pivot.position.z += size;
+        if (Math.abs(group.rotation.x) > Math.PI/2) {
+          group.position.z += size;
           original += size;
-          pivot.rotation.x = 0;
+          group.rotation.x = 0;
         }
-
-
-
       },
       // Player is close: turn the object red
       warn: function(distance) {
         cube.material.color.r += distance/10 ;
       },
       invert: function() {
-        invert = !invert;
+        is_up = !is_up;
       },
       speed: speed,
+      pposition: position,
     });
   };
 });

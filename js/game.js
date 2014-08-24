@@ -28,16 +28,16 @@ define(function(require) {
 
   });
 
-  window.addEventListener('keyup', function(){
+  $(window).keyup(function(e){
     keydown = false;
   });
-  window.addEventListener('keydown', function(){
+  $(window).keydown(function(e){
     if (keydown) {
       return;
     }
-    scene.nextDialog(event.keyCode);
+    scene.nextDialog(e.keyCode);
     keydown = true;
-    switch(event.keyCode) {
+    switch(e.keyCode) {
 
       case 32:
         keydown = true;

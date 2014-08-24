@@ -1,43 +1,58 @@
 define(function(require) {
-  var Cube = require('cube'),
-      Light = require('light');
+  var MovingCube = require('movingcube'),
+      Light = require('light'),
+      Cube = require('cube'),
+      Collision = require('collision');
 
   return function Player() {
     var size = 0.1,
         pos = size/2,
-        bw = new Cube(0xFF0000, size),
-        light = new Light(0xFF0000, 0.5, 5),
+        mc = new MovingCube(0xFF0000, size),
+        debug_cube = new Cube(0x00FF00, size),
+        light = new Light(0xFF0000, 0.7, 1),
         group = new THREE.Object3D();
-    group.add(light, bw);
-    bw.speed.setZ(0.01);
+    group.add(light, mc);
+    mc.setSpeed(0, 0.05);
     return $.extend(group, {
       update: function(t, objects) {
-        bw.update(t);
-        //console.log(bw.position)
+        var self = this;
+        mc.update(t);
 
-        var ray = new THREE.Raycaster(bw.position, new THREE.Vector3(0,0,1), 0 , 1000000);
-        var intersects = ray.intersectObjects(objects, true);
-        //console.log(intersects.length);
-
-        for (var i = 0; i < intersects.length; i++) {
-          if (intersects[i].distance > size/2 * 0.5){
-            //intersects[i].object.warn(intersects[i].distance);
+        var result = Collision(objects, mc.getPosition());
+        function bf(collision) {
+          if (collision.distance < (size/2)*0.7) {
+            mc.stopMoving();
+          } else if (collision.distance < 1) {
+            collision.object.material.color.r += 0.01;
           }
-          else {
-            //console.log(intersects[i].distance)
-            //console.log('die');
-            bw.speed.setZ(0.0);
-          }
+          collision.object.hitNotify(collision.distance, mc);
         }
-        //console.log(bw.position+Math.sin(bw.rotation.x)*size)
-        light.position.copy(bw.getPosition());
-        //group.position.copy(bw.getRotPos());
+        function lf(collision) {
+          collision.object.material.color.r += 0.01;
+          collision.object.hitNotify(collision.distance, mc);
+        }
+        $.map(result.forward, bf);
+        //$.map(result.backward, bf);
+        $.map(result.left, lf);
+        $.map(result.right, lf);
+
+        light.position.copy(mc.getPosition());
+        debug_cube.position.copy(mc.getPosition());
       },
       invert: function(t) {
-        bw.invert();
+        mc.invert();
+      },
+      setSpeed: function(x,z) {
+        mc.setSpeed(x,z);
+      },
+      getSpeed: function() {
+        return mc.getSpeed();
+      },
+      reset: function() {
+        mc.startMoving();
       },
       getPosition: function() {
-        return bw.getPosition().clone();
+        return mc.getPosition().clone();
       }
     });
   };

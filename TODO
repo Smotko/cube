@@ -1,5 +1,15 @@
 Connected Worlds
 
+TODO:
+1. More Levels
+2. Level Transitions (with triggers)
+3. Triggers (for level changes, movable blocks, color changes etc.)
+4. Score (1 point for each obstacle, 2 points for close calls)
+5. Speed should increase with levels
+6. Movable obstacles
+7. Basic UI, explain controls (space bar transitions you between worlds - it is because of you, noble red block, that the worlds are connected. You are the only thing connecting them. If you fail everything will be lost. True story.
+
+
 basic idea:
  - two worlds, black and white
  - connected because they are showing the same objects

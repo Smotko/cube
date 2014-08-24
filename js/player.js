@@ -9,7 +9,7 @@ define(function(require) {
         light = new Light(0xFF0000, 0.5, 5),
         group = new THREE.Object3D();
     group.add(light, bw);
-    bw.speed.setZ(0.05);
+    bw.speed.setZ(0.01);
     return $.extend(group, {
       update: function(t, objects) {
         bw.update(t);
@@ -17,7 +17,7 @@ define(function(require) {
 
         var ray = new THREE.Raycaster(bw.position, new THREE.Vector3(0,0,1), 0 , 1000000);
         var intersects = ray.intersectObjects(objects, true);
-        console.log(intersects.length);
+        //console.log(intersects.length);
 
         for (var i = 0; i < intersects.length; i++) {
           if (intersects[i].distance > size/2 * 0.5){

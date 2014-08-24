@@ -4,21 +4,29 @@ define(function(require) {
   return function Cube(color, size) {
     var material = new THREE.MeshLambertMaterial({ color: color }),
         geometry = new THREE.BoxGeometry(size, size, size),
+        original_geometry = geometry.clone(),
         mesh = new THREE.Mesh(geometry, material),
         speed = new THREE.Vector3(),
-        is_up = true;
+        is_up = true,
+        group = new THREE.Object3D(); // needed for rotation changes;
 
-    geometry.applyMatrix(new THREE.Matrix4().makeTranslation(0, size/2, -size/2));
+    group.add(mesh);
+    return $.extend(group, {
 
-    return $.extend(mesh, {
       update: function() {
-        mesh.rotation.x += speed.z;
-        mesh.rotation.z += speed.x;
-        if (mesh.rotation.x >= Math.PI/2) {
-          mesh.position.z += size;
-          mesh.rotation.x = 0;
-        }
+        mesh.position.copy(speed).normalize().multiplyScalar(-size/2);
         mesh.position.y = is_up ? size/2 : -size/2;
+        if (is_up) {
+          group.rotation.x += speed.z;
+          group.rotation.z -= speed.x;
+        } else {
+          group.rotation.x -= speed.z;
+          group.rotation.z += speed.x;
+        }
+        if (Math.abs(group.rotation.x) >= Math.PI/2) {
+          group.position.z += size;
+          group.rotation.x = 0;
+        }
       },
       invert: function() {
         is_up = !is_up;
@@ -27,10 +35,15 @@ define(function(require) {
 
       },
       getPosition: function(){
-        var v = mesh.position.clone();
-        v.z += Math.sin(mesh.rotation.x)*size;
-        v.x += Math.sin(mesh.rotation.z)*size;
-        return v.add(new THREE.Vector3(0, size/2, 0));
+        var v = group.position.clone();
+        if (is_up) {
+          v.z += Math.sin(group.rotation.x)*size;
+          v.x += Math.sin(group.rotation.z)*size;
+        } else {
+          v.z -= Math.sin(group.rotation.x)*size;
+          v.x -= Math.sin(group.rotation.z)*size;
+        }
+        return v.add(new THREE.Vector3(0, 0, 0));
       },
       speed: speed,
     });

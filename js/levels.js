@@ -53,7 +53,7 @@ define(function(require){
         "I have a <i class='superpower'>superpower</i>!<br><small>Press <i class='key'>[enter]</i></small>",
         "I can slide between <i>Worlds</i>.<br><small>Press <i class='superpower'>[space]</i> to try it now!</small>",
         "That was cool, right?<br> <small>Press <i class='superpower'>[space]</i> to get back to<br> the first world.</small>",
-        "OK, try to use the <i class='superpower'>superpower</i> to get passed obstacles!<br><small>Press <i class='key'>[enter]</i></small>"
+        "OK, try to use the <i class='superpower'>superpower</i> to get past obstacles!<br><small>Press <i class='key'>[enter]</i></small>"
       ], true);
 
       var size = 1;
